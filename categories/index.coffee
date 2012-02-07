@@ -7,9 +7,8 @@ readPackages = (dirpath) ->
     fpath = "#{dirpath}/#{fname}"
     ext = extname fname
     if statSync(fpath).isFile() and ext is '.json'
-      base = basename fname, '.json'
-      name = base.replace '_', ' '
-      packages.push { name: name}
+      packages.push
+        name: basename(fname, '.json').replace '_', ' '
   return packages
 
 readCategories = () ->
@@ -17,13 +16,10 @@ readCategories = () ->
   for fname in readdirSync __dirname
     fpath = "#{__dirname}/#{fname}"
     if statSync(fpath).isDirectory()
-      id = fname
-      name = fname.replace '_', ' '
-      packages = readPackages fpath
       categories.push
-        id: id
-        name: name
-        packages: packages
+        id: fname
+        name: fname.replace '_', ' '
+        packages: readPackages fpath
   return categories
 
 module.exports = readCategories
