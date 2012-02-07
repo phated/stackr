@@ -7,19 +7,7 @@ html
     script(src="js/jquery-1.7.1.min.js")
     script(src="js/bootstrap-tab.js")
     script(src="js/bootstrap-collapse.js")
-    script
-      $(document).ready(function() {
-        $('.sidebar-nav .collapse').on('show', function () {
-          $('.nav-header').removeClass('active');
-          var el = $(this);
-          $('[data-target="#'+el.attr('id')+'"]').parent('.nav-header').addClass('active');
-        });
-        $('input[type="checkbox"]').on('change', function() {
-          if(!$('#stack').hasClass('in')) {
-            $('#stack').collapse('show');
-          }
-        });
-      });
+    script(src="js/script.js")
     style
       body { margin-top: 50px; }
       .sidebar-nav { padding: 9px 0; }
@@ -46,7 +34,7 @@ html
                   li.collapse(id="#{category.id}",class="#{uncollapse}")
                     each package in category.packages
                       label.checkbox
-                        input(type="checkbox")
+                        input(type="checkbox",value="#{package.name}")
                         | #{package.name}
             div.span6
               //a(href="#",data-toggle="collapse",data-target="#stack") Stack

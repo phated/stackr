@@ -11,7 +11,7 @@ readPackages = (dirpath) ->
         name: basename(fname, '.json').replace '_', ' '
   return packages
 
-readCategories = () ->
+readCategories = ->
   categories = []
   for fname in readdirSync __dirname
     fpath = "#{__dirname}/#{fname}"
