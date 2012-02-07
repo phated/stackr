@@ -1,0 +1,56 @@
+!!! 5
+html
+  head
+    title= title
+    link(rel="stylesheet/less",type="text/css",href="less/bootstrap.less")
+    script(src="js/less-1.2.1.min.js")
+    script(src="js/jquery-1.7.1.min.js")
+    script(src="js/bootstrap-tab.js")
+    script(src="js/bootstrap-collapse.js")
+    script
+      $(document).ready(function() {
+        $('.sidebar-nav .collapse').on('show', function () {
+          $('.nav-header').removeClass('active');
+          var el = $(this);
+          $('[data-target="#'+el.attr('id')+'"]').parent('.nav-header').addClass('active');
+        });
+        $('input[type="checkbox"]').on('change', function() {
+          if(!$('#stack').hasClass('in')) {
+            $('#stack').collapse('show');
+          }
+        });
+      });
+    style
+      body { margin-top: 50px; }
+      .sidebar-nav { padding: 9px 0; }
+  body
+    div.navbar.navbar-fixed-top
+      div.navbar-inner
+        div.container-fluid
+          a.brand= title
+    div.container-fluid
+      div.row-fluid
+        div.span6
+          div.row-fluid
+            div.span6.well.sidebar-nav
+              ul.nav.nav-list
+                each category, key in categories
+                  if key == 0
+                    - var active = 'active'
+                    - var uncollapse = 'in'
+                  else
+                    - var active = ''
+                    - var uncollapse = ''
+                  li.nav-header(class="#{active}")
+                    a(href="#",data-toggle="collapse",data-target="\##{category.id}",data-parent=".nav-list") #{category.name}
+                  li.collapse(id="#{category.id}",class="#{uncollapse}")
+                    each package in category.packages
+                      label.checkbox
+                        input(type="checkbox")
+                        | #{package.name}
+            div.span6
+              //a(href="#",data-toggle="collapse",data-target="#stack") Stack
+              div#stack.collapse.width(style="height: auto;width: 0;")
+                div.well
+                  div Test1
+                  div Test2
