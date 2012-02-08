@@ -1,17 +1,30 @@
-$ ->
-  stack = []
-
-  $('.sidebar-nav .collapse').on 'show', ->
-    $('.nav-header').removeClass 'active'
-    id = $(this).attr 'id'
-    $("[data-target=\"\##{id}\"]").parent('.nav-header').addClass('active');
-
-  $('input[type="checkbox"]').on 'change', ->
-    if $(@).is ':checked'
-      stack.push @value
+class Stackr
+  constructor: ->
+    @stack = []
+    @navHeaders = $ '.nav-header'
+    @userStack = $ '#stack'
+    
+  highlightActive: (event) =>
+    @navHeaders.removeClass 'active'
+    $(event.currentTarget).addClass 'active'
+    
+  togglePackages: (event) =>
+    el = $(event.currentTarget)
+    if el.is ':checked'
+      @stack.push el.val()
     else
-      stack = stack.filter (package) => package isnt @value
-    unless $('#stack').hasClass 'in'
-      $('#stack').collapse 'show'
-    $('#stack').collapse 'hide' if stack.length is 0
-    console.log stack
+      @stack = @stack.filter (package) -> package isnt el.val()
+    @toggleStack()
+    @renderStack()
+    
+  toggleStack: ->
+    @userStack.collapse 'show' unless @userStack.hasClass 'in'
+    @userStack.collapse 'hide' if @stack.length is 0
+    
+  renderStack: ->
+    @userStack.find('ul').html Handlebars.templates.stack @stack
+
+$ ->
+  stackr = new Stackr()
+  $('.sidebar-nav .nav-header').on 'click', stackr.highlightActive
+  $('input[type="checkbox"]').on 'change', stackr.togglePackages

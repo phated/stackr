@@ -3,14 +3,17 @@ html
   head
     title= title
     link(rel="stylesheet/less",type="text/css",href="less/bootstrap.less")
+    link(rel="stylesheet/less",type="text/css",href="less/responsive.less")
     script(src="js/less-1.2.1.min.js")
     script(src="js/jquery-1.7.1.min.js")
     script(src="js/bootstrap-tab.js")
     script(src="js/bootstrap-collapse.js")
+    script(src="js/handlebars.runtime.js")
+    script(src="handlebars/stack.js")  
     script(src="js/script.js")
     style
       body { margin-top: 50px; }
-      .sidebar-nav { padding: 9px 0; }
+      .sidebar-nav { padding: 9px 0; margin: 0; }
   body
     div.navbar.navbar-fixed-top
       div.navbar-inner
@@ -20,25 +23,33 @@ html
       div.row-fluid
         div.span4
           div.row-fluid
-            div.span6.well.sidebar-nav
-              ul.nav.nav-list
-                each category, key in categories
-                  if key == 0
-                    - var active = 'active'
-                    - var uncollapse = 'in'
-                  else
-                    - var active = ''
-                    - var uncollapse = ''
-                  li.nav-header(class="#{active}")
-                    a(href="#",data-toggle="collapse",data-target="\##{category.id}",data-parent=".nav-list") #{category.name}
-                  li.collapse(id="#{category.id}",class="#{uncollapse}")
-                    each package in category.packages
-                      label.checkbox
-                        input(type="checkbox",value="#{package.name}")
-                        | #{package.name}
             div.span6
-              //a(href="#",data-toggle="collapse",data-target="#stack") Stack
+              div.well.sidebar-nav
+                ul.nav.nav-list
+                  each category, key in categories
+                    if key == 0
+                      - var active = 'active'
+                      - var uncollapse = 'in'
+                    else
+                      - var active = ''
+                      - var uncollapse = ''
+                    li.nav-header(class="#{active}")
+                      a(href="#",data-toggle="collapse",data-target="\##{category.id}",data-parent=".nav-list") #{category.name}
+                    li.collapse(id="#{category.id}",class="#{uncollapse}")
+                      each package in category.packages
+                        label.checkbox
+                          input(type="checkbox",value="#{package.name}")
+                          | #{package.name}
+            div.span6
               div#stack.collapse.width(style="height: auto;width: 0;")
-                div.well
-                  div Test1
-                  div Test2
+                div.well.sidebar-nav
+                  ul.nav.nav-list
+                    li.nav-header Your Stack
+                    li
+                      label.checkbox
+                        input(type="checkbox")
+                        | Test 1
+                    li
+                      label.checkbox
+                        input(type="checkbox")
+                        | Test 2
